@@ -66,8 +66,8 @@ img {
   --light-grayish-blue-dark: hsl(234, 39%, 85%);
   --light-grayish-blue-hover: hsl(236, 33%, 92%); /*(hover)*/
   --dark-grayish-blue-dark: hsl(234, 11%, 52%);
-  --very-dark-grayish-blue1: hsl(233, 14%, 35%);
-  --very-dark-grayish-blue2: hsl(237, 14%, 26%);
+  --very-dark-grayish-blue: hsl(233, 14%, 35%);
+  --very-dark-grayish-blue: hsl(237, 14%, 26%);
 }
 
 /* Styles */

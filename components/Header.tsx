@@ -6,7 +6,7 @@ import desLight from './../images/bg-desktop-light.jpg';
 
 const Header = () => {
   return (
-    <header className="w-[100dvw] h-400H">
+    <header className="relative w-[100dvw] h-auto">
       {/* DARK THEME */}
       <Image
         src={mobDark}
