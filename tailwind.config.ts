@@ -415,7 +415,7 @@ module.exports = {
         '800I': '50rem',
       },
       backgroundImage: {
-        'check-background': 'var(--check-background',
+        'check-background': 'var(--check-background)',
         'custom-gradient1':
           'linear-gradient(90deg,var(--very-light-red), var(--light-red)',
         'custom-gradient2':
@@ -441,6 +441,7 @@ module.exports = {
         '48P': '3rem',
         '56P': '3.5rem',
         '64P': '4rem',
+        '72P': '4.5rem',
         '80P': '5rem',
         '96P': '6rem',
         '112P': '7rem',
@@ -495,6 +496,8 @@ module.exports = {
         0.2: '0.2rem',
         0.3: '0.3rem',
         0.4: '0.4rem',
+        1.2: '1.2rem',
+        1.5: '1.5rem',
       },
       lineHeight: {
         '3xs-tight': '.8',

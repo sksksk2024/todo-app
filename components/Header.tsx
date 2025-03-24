@@ -21,7 +21,7 @@ const Header = () => {
         aria-hidden="true"
       />
       {/* LIGHT THEME */}
-      <Image
+      {/* <Image
         src={mobLight}
         className="w-full lg:hidden"
         alt=""
@@ -32,7 +32,7 @@ const Header = () => {
         className="hidden w-full lg:block"
         alt=""
         aria-hidden="true"
-      />
+      /> */}
     </header>
   );
 };
