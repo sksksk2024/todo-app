@@ -1,6 +1,9 @@
 'use client';
 
 import Head from 'next/head';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Main from '@/components/Main';
 
 export default function Home() {
   return (
@@ -14,6 +17,9 @@ export default function Home() {
           content="Welcome to the homepage of the Todo App"
         />
       </Head>
+      <Header />
+      <Main />
+      <Footer />
     </>
   );
 }
