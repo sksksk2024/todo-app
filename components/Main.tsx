@@ -5,8 +5,54 @@ import sun from './../images/icon-sun.svg';
 import moon from './../images/icon-moon.svg';
 import checked from './../images/icon-check.svg';
 import cross from './../images/icon-cross.svg';
+import { useState } from 'react';
+import { todos as initialTodos } from './utils/Todos';
+
+// Fetch todos server-side
+const fetchTodos = async () => {
+  const res = await fetch('http://localhost:3000/api/todos', {
+    cache: 'no-store',
+  });
+
+  return res.json();
+};
 
 const Main = () => {
+  const todosLength = initialTodos.length;
+
+  const [todos, setTodos] = useState(
+    initialTodos.map((todo) => ({ ...todo, done: false }))
+  );
+  const [active, setActive] = useState<boolean>(false);
+  const [all, setAll] = useState<boolean>(true);
+  const [completed, setCompleted] = useState<boolean>(false);
+
+  const handleCheck = (id: number) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      )
+    );
+  };
+
+  const handleActivated = () => {
+    setAll(false);
+    setActive(true);
+    setCompleted(false);
+  };
+
+  const handleAll = () => {
+    setAll(true);
+    setActive(false);
+    setCompleted(false);
+  };
+
+  const handleCompleted = () => {
+    setAll(false);
+    setActive(false);
+    setCompleted(true);
+  };
+
   return (
     <main className="relative -top-128I md:-top-192I flex flex-col justify-center items-center gap-10 text-center w-full max-w-container-1000 p-16P mx-auto md:w-[70dvw] md:p-48P">
       {/* HEADER LIST */}
@@ -40,73 +86,151 @@ const Main = () => {
 
       {/* Todo List Main */}
       <ul className="text-lg text-light-grayish-blue-dark text-start w-full bg-very-dark-desaturated-blue rounded-10BR space-y-2 shadow-lg">
-        <div className="flex justify-start items-center gap-4 border-b-white border-b-2 p-8P px-32P">
-          <button
-            type="button"
-            className="min-w-[2rem] min-h-[2rem] border border-white rounded-full bg-check-background"
-          >
-            <Image src={checked} className="w-1/2 mx-auto" alt="check todo" />
-          </button>
-          <li className="py-16P">Wash Dishes</li>
-        </div>
-        {/* ////////////////////////// */}
+        {todos.map((todo) =>
+          all ? (
+            <div
+              key={todo.id}
+              className="flex justify-between items-center gap-6 border-b-white border-b-2 p-8P px-32P"
+            >
+              <div className="flex justify-center items-center gap-4">
+                <button
+                  type="button"
+                  className={`min-w-[2rem] min-h-[2rem] border border-white rounded-full
+                  ${todo.done && 'bg-check-background'}
+                  `}
+                  onClick={() => handleCheck(todo.id)}
+                >
+                  <Image
+                    src={checked}
+                    className={`w-1/2 mx-auto
+                  ${!todo.done && 'hidden'}
+                  `}
+                    alt="check todo"
+                  />
+                </button>
+                <li
+                  className={`py-16P
+                ${todo.done && 'line-through text-very-dark-grayish-blue-light'}
+                `}
+                >
+                  {todo.todo}
+                </li>
+              </div>
 
-        <div className="flex justify-start items-center gap-4 border-b-white border-b-2 p-8P px-32P">
-          <button
-            type="button"
-            className="min-w-[2rem] min-h-[2rem] border border-white rounded-full bg-check-background"
-          >
-            <Image src={checked} className="w-1/2 mx-auto" alt="check todo" />
-          </button>
-          <li className="py-16P">Go with Stefi to Ping pong and be yourself</li>
-        </div>
-        {/* //////////////////////////// */}
+              <Image
+                id="delete"
+                src={cross}
+                className="cursor-pointer"
+                alt="delete"
+              />
+            </div>
+          ) : active && !todo.done ? (
+            <div
+              key={todo.id}
+              className="flex justify-between items-center gap-6 border-b-white border-b-2 p-8P px-32P"
+            >
+              <div className="flex justify-center items-center gap-4">
+                <button
+                  type="button"
+                  className={`min-w-[2rem] min-h-[2rem] border border-white rounded-full
+                  ${todo.done && 'bg-check-background'}
+                  `}
+                  onClick={() => handleCheck(todo.id)}
+                >
+                  <Image
+                    src={checked}
+                    className={`w-1/2 mx-auto
+                  ${!todo.done && 'hidden'}
+                  `}
+                    alt="check todo"
+                  />
+                </button>
+                <li
+                  className={`py-16P
+                ${todo.done && 'line-through text-very-dark-grayish-blue-light'}
+                `}
+                >
+                  {todo.todo}
+                </li>
+              </div>
 
-        <div className="flex justify-start items-center gap-4 border-b-white border-b-2 p-8P px-32P">
-          <button
-            type="button"
-            className="min-w-[2rem] min-h-[2rem] border border-white rounded-full bg-check-background"
-          >
-            <Image src={checked} className="w-1/2 mx-auto" alt="check todo" />
-          </button>
-          <li className="py-16P">Workout</li>
-        </div>
-        <div className="flex justify-start items-center gap-4 border-b-white border-b-2 p-8P px-32P">
-          <button
-            type="button"
-            className="min-w-[2rem] min-h-[2rem] border border-white rounded-full bg-check-background"
-          >
-            <Image src={checked} className="w-1/2 mx-auto" alt="check todo" />
-          </button>
-          <li className="py-16P">Read Bible</li>
-        </div>
-        <div className="flex justify-start items-center gap-4 border-b-dark-grayish-blue-light border-b-2 p-8P px-32P">
-          <button
-            type="button"
-            className="min-w-[2rem] min-h-[2rem] border border-white rounded-full bg-check-background"
-          >
-            <Image src={checked} className="w-1/2 mx-auto" alt="check todo" />
-          </button>
-          <li className="py-16P">Go and leave school</li>
-        </div>
+              <Image
+                id="delete"
+                src={cross}
+                className="cursor-pointer"
+                alt="delete"
+              />
+            </div>
+          ) : (
+            active &&
+            todo.done && (
+              <div
+                key={todo.id}
+                className="flex justify-between items-center gap-6 border-b-white border-b-2 p-8P px-32P"
+              >
+                <div className="flex justify-center items-center gap-4">
+                  <button
+                    type="button"
+                    className={`min-w-[2rem] min-h-[2rem] border border-white rounded-full
+                  ${todo.done && 'bg-check-background'}
+                  `}
+                    onClick={() => handleCheck(todo.id)}
+                  >
+                    <Image
+                      src={checked}
+                      className={`w-1/2 mx-auto
+                  ${!todo.done && 'hidden'}
+                  `}
+                      alt="check todo"
+                    />
+                  </button>
+                  <li
+                    className={`py-16P
+                ${todo.done && 'line-through text-very-dark-grayish-blue-light'}
+                `}
+                  >
+                    {todo.todo}
+                  </li>
+                </div>
+
+                <Image
+                  id="delete"
+                  src={cross}
+                  className="cursor-pointer"
+                  alt="delete"
+                />
+              </div>
+            )
+          )
+        )}
+
         {/* Stats */}
         <div className="flex justify-between items-center gap-4 text-md text-dark-grayish-blue-light p-24P">
-          <div className="">5 items left</div>
+          <div className="">{todosLength} items left</div>
           <button
             type="button"
-            className="hidden cursor-pointer active:text-bright-blue lg:block"
+            className={`hidden cursor-pointer lg:block
+              ${all && 'text-bright-blue'}
+              `}
+            onClick={handleAll}
           >
             All
           </button>
           <button
             type="button"
-            className="hidden cursor-pointer active:text-bright-blue lg:block"
+            className={`hidden cursor-pointer lg:block
+              ${active && 'text-bright-blue'}
+              `}
+            onClick={handleActivated}
           >
             Active
           </button>
           <button
             type="button"
-            className="hidden cursor-pointer active:text-bright-blue lg:block"
+            className={`hidden cursor-pointer lg:block
+              ${completed && 'text-bright-blue'}
+              `}
+            onClick={handleCompleted}
           >
             Completed
           </button>
@@ -121,25 +245,32 @@ const Main = () => {
       <div className="flex justify-around items-center gap-4 text-dark-grayish-blue-light text-lg w-full p-24P bg-very-dark-desaturated-blue rounded-10BR shadow-lg xs:gap-10 md:justify-center lg:hidden">
         <button
           type="button"
-          className="cursor-pointer active:text-bright-blue"
+          className={`cursor-pointer 
+            ${all && 'text-bright-blue'}
+            `}
+          onClick={handleAll}
         >
           All
         </button>
         <button
           type="button"
-          className="cursor-pointer active:text-bright-blue"
+          className={`cursor-pointer active:text-bright-blue
+            ${active && 'text-bright-blue'}
+            `}
+          onClick={handleActivated}
         >
           Active
         </button>
         <button
           type="button"
-          className="cursor-pointer active:text-bright-blue"
+          className={`cursor-pointer active:text-bright-blue
+            ${completed && 'text-bright-blue'}
+            `}
+          onClick={handleCompleted}
         >
           Completed
         </button>
       </div>
-
-      {/*  left All Active Completed  */}
     </main>
   );
 };
